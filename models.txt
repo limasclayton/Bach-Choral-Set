@@ -6,3 +6,8 @@ Pipeline best params: {'classifier__multi_class': 'multinomial', 'classifier__ma
                    max_iter=350, multi_class='multinomial', n_jobs=None,
                    penalty='l2', random_state=123, solver='lbfgs', tol=0.0001,
                    verbose=0, warm_start=False)}
+
+SVM train score: 0.807
+SVM test score: 0.738
+SVM best params: {'random_state': 123, 'kernel': 'rbf', 'gamma': 'scale', 'C': 1.2915496650148828}
+SVM supports: [1393 1575 1928 ... 2327 2531 2590]

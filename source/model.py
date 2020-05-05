@@ -10,7 +10,9 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler, MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV, GridSearchCV, LeaveOneOut
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+
+from sklearn.linear_model import LogisticRegression, LinearRegression
 from xgboost import XGBClassifier
 
 # paths
@@ -38,6 +40,23 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 print(X_train.shape, y_train.shape)
 print(X_test.shape, y_test.shape)
 
+# Support Vector Machine
+param_distributions_svm = {
+    'C' : np.logspace(-3, 1, 10),
+    'gamma' : ['scale', 'auto'],
+    'kernel' : ['linear', 'poly', 'rbf', 'sigmoid'],
+    'random_state' : [RANDOM_STATE]
+}
+svm = SVC()
+svm_CV = RandomizedSearchCV(svm, param_distributions=param_distributions_svm, n_jobs=-1, cv=10, random_state=RANDOM_STATE)
+svm_CV.fit(X_train, y_train)
+print('-' * 100)
+print('SVM train score: {:.3f}'.format(svm_CV.score(X_train, y_train)))
+print('SVM test score: {:.3f}'.format(svm_CV.score(X_test, y_test)))
+print('SVM best params: {0}'.format(svm_CV.best_params_))
+print('SVM supports: {0}'.format(svm_CV.best_estimator_.support_))
+print('SVM support vector: {0}'.format(svm_CV.best_estimator_.support_vectors_))
+print('SVM number of support vector: {0}'.format(svm_CV.best_estimator_.n_support_))
 
 # logistic pipeline
 lr_pipe = Pipeline([
@@ -51,7 +70,6 @@ param_grid = [
     'classifier__random_state' : [RANDOM_STATE]}
     ]
 
-#LeaveOneOut()
 lr_cv = RandomizedSearchCV(lr_pipe, param_grid, n_jobs=-1, cv=10, random_state=RANDOM_STATE)
 lr_cv.fit(X_train, y_train)
 
