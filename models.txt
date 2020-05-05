@@ -1,0 +1,8 @@
+Pipeline train score: 0.789
+Pipeline test score: 0.735
+Pipeline Best score: 0.7366950360023409
+Pipeline best params: {'classifier__multi_class': 'multinomial', 'classifier__max_iter': 350, 'classifier__C': 1.4677992676220706, 'classifier': LogisticRegression(C=1.4677992676220706, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=None,
+                   max_iter=350, multi_class='multinomial', n_jobs=None,
+                   penalty='l2', random_state=123, solver='lbfgs', tol=0.0001,
+                   verbose=0, warm_start=False)}
