@@ -1,3 +1,8 @@
+SVM train score: 0.807
+SVM test score: 0.738
+SVM best params: {'random_state': 123, 'kernel': 'rbf', 'gamma': 'scale', 'C': 1.2915496650148828}
+SVM supports: [1393 1575 1928 ... 2327 2531 2590]
+
 Pipeline train score: 0.789
 Pipeline test score: 0.735
 Pipeline Best score: 0.7366950360023409
@@ -7,7 +12,6 @@ Pipeline best params: {'classifier__multi_class': 'multinomial', 'classifier__ma
                    penalty='l2', random_state=123, solver='lbfgs', tol=0.0001,
                    verbose=0, warm_start=False)}
 
-SVM train score: 0.807
-SVM test score: 0.738
-SVM best params: {'random_state': 123, 'kernel': 'rbf', 'gamma': 'scale', 'C': 1.2915496650148828}
-SVM supports: [1393 1575 1928 ... 2327 2531 2590]
+SGD train score: 0.771
+SGD test score: 0.714
+SGD best params: {'random_state': 123, 'penalty': 'l2', 'n_jobs': -1, 'l1_ratio': 0.8888888888888888, 'alpha': 0.00021544346900318823}

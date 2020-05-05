@@ -12,7 +12,7 @@ from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV, GridSearchCV, LeaveOneOut
 from sklearn.svm import SVC
 
-from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.linear_model import LogisticRegression, LinearRegression, SGDClassifier
 from xgboost import XGBClassifier
 
 # paths
@@ -39,6 +39,23 @@ X = pd.get_dummies(X, drop_first=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
 print(X_train.shape, y_train.shape)
 print(X_test.shape, y_test.shape)
+
+# SGD
+param_distributions_sgd = {
+    #'loss' : ['hinge', 'log', 'modified_huber', 'squared_hinge'],
+    'penalty' : ['l2', 'l1', 'elasticnet'],
+    'alpha' : np.logspace(-5,-1, 10),
+    'l1_ratio' : np.linspace(0, 1, 10),
+    'n_jobs' : [-1],
+    'random_state' : [RANDOM_STATE]
+}
+sgd = SGDClassifier()
+sgd_CV = RandomizedSearchCV(sgd, param_distributions=param_distributions_sgd, n_jobs=-1, cv=10, random_state=RANDOM_STATE)
+sgd_CV.fit(X_train, y_train)
+print('-' * 100)
+print('SGD train score: {:.3f}'.format(sgd_CV.score(X_train, y_train)))
+print('SGD test score: {:.3f}'.format(sgd_CV.score(X_test, y_test)))
+print('SGD best params: {0}'.format(sgd_CV.best_params_))
 
 # Support Vector Machine
 param_distributions_svm = {
