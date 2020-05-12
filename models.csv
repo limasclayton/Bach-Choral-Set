@@ -1,4 +1,4 @@
 model," selected_features",details," train_score"," test_score"," parameters"
 SVM,"All dummies, drop 'choral_ID'",,"0.807","0.738","{'random_state': 123, 'kernel': 'rbf', 'gamma': 'scale', 'C': 1.2915496650148828}"
 LogisticRegression,"",,"0.789","0.735","{'classifier__multi_class': 'multinomial', 'classifier__max_iter': 350, 'classifier__C': 1.4677992676220706, 'classifier': LogisticRegression(C=1.4677992676220706, class_weight=None, dual=False, fit_intercept=True, intercept_scaling=1, l1_ratio=None, max_iter=350, multi_class='multinomial', n_jobs=None, penalty='l2', random_state=123, solver='lbfgs', tol=0.0001, verbose=0, warm_start=False)}"
-CatBoost,"drop 'choral_ID'",,"","","Default"
+CatBoost,"drop 'choral_ID'",,"0.798","0.706","Default"
