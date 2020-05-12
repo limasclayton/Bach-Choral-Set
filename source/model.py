@@ -11,9 +11,9 @@ from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV, GridSearchCV, LeaveOneOut
 from sklearn.svm import SVC
-
 from sklearn.linear_model import LogisticRegression, LinearRegression, SGDClassifier
 from xgboost import XGBClassifier
+from catboost import CatBoostClassifier
 
 # paths
 dataset_path = "input/bach_choral_set_dataset.csv"
@@ -24,21 +24,22 @@ df = pd.read_csv(dataset_path, index_col=['event_number'])
 X = df.drop('chord_label', axis=1)
 y = df.chord_label
 
-# PREPROCESSNG
+# PREPROCESSING
+encoder = LabelEncoder()
+y = encoder.fit_transform(y)
 X.meter = X.meter.astype('category')
 X.drop('choral_ID', axis=1, inplace=True)
-X = pd.get_dummies(X, drop_first=True)
-#X.to_csv('x.csv')
+X_dummies = pd.get_dummies(X, drop_first=True)
 
+#X.to_csv('x.csv')
 
 # FEATURE ENGENIRING
 # Transform meter in categorical variable
 # FEATURE SELECTION
+X_train_cat, X_test_cat, y_train_cat, y_test_cat = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
+X_train, X_test, y_train, y_test = train_test_split(X_dummies, y, test_size=0.3, random_state=RANDOM_STATE)
 
 # MODEL
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
-print(X_train.shape, y_train.shape)
-print(X_test.shape, y_test.shape)
 
 # Support Vector Machine
 param_distributions_svm = {
@@ -58,22 +59,6 @@ print('SVM supports: {0}'.format(svm_CV.best_estimator_.support_))
 print('SVM support vector: {0}'.format(svm_CV.best_estimator_.support_vectors_))
 print('SVM number of support vector: {0}'.format(svm_CV.best_estimator_.n_support_))
 
-# SGD
-param_distributions_sgd = {
-    #'loss' : ['hinge', 'log', 'modified_huber', 'squared_hinge'],
-    'penalty' : ['l2', 'l1', 'elasticnet'],
-    'alpha' : np.logspace(-5,-1, 10),
-    'l1_ratio' : np.linspace(0, 1, 10),
-    'n_jobs' : [-1],
-    'random_state' : [RANDOM_STATE]
-}
-sgd = SGDClassifier()
-sgd_CV = RandomizedSearchCV(sgd, param_distributions=param_distributions_sgd, n_jobs=-1, cv=10, random_state=RANDOM_STATE)
-sgd_CV.fit(X_train, y_train)
-print('-' * 100)
-print('SGD train score: {:.3f}'.format(sgd_CV.score(X_train, y_train)))
-print('SGD test score: {:.3f}'.format(sgd_CV.score(X_test, y_test)))
-print('SGD best params: {0}'.format(sgd_CV.best_params_))
 
 # logistic pipeline
 lr_pipe = Pipeline([
@@ -116,3 +101,26 @@ print('-' * 100)
 print('XGB train score: {:.3f}'.format(xgb_CV.score(X_train, y_train)))
 print('XGB test score: {:.3f}'.format(xgb_CV.score(X_test, y_test)))
 print('XGB best params: {0}'.format(xgb_CV.best_params_))
+
+# Catboost
+cat_features = [
+    'pitch_1',
+    'pitch_2',
+    'pitch_3',
+    'pitch_4',
+    'pitch_5',
+    'pitch_6',
+    'pitch_7',
+    'pitch_8',
+    'pitch_9',
+    'pitch_10',
+    'pitch_11',
+    'pitch_12',
+    'bass',
+    'meter'
+]
+
+cat = CatBoostClassifier(cat_features=cat_features, random_seed=RANDOM_STATE)
+cat.fit(X_train_cat, y_train_cat)
+print('CatBoost train score: {:.3f}'.format(cat.score(X_train_cat, y_train_cat)))
+print('CatBoost test score: {:.3f}'.format(cat.score(X_test_cat, y_test_cat)))
