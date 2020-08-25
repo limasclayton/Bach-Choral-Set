@@ -30,11 +30,9 @@ y = encoder.fit_transform(y)
 X.meter = X.meter.astype('category')
 X.drop('choral_ID', axis=1, inplace=True)
 X_dummies = pd.get_dummies(X, drop_first=True)
-
+print(X_dummies.info())
 #X.to_csv('x.csv')
 
-# FEATURE ENGENIRING
-# Transform meter in categorical variable
 # FEATURE SELECTION
 X_train_cat, X_test_cat, y_train_cat, y_test_cat = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
 X_train, X_test, y_train, y_test = train_test_split(X_dummies, y, test_size=0.3, random_state=RANDOM_STATE)
@@ -53,12 +51,9 @@ svm_CV = RandomizedSearchCV(svm, param_distributions=param_distributions_svm, n_
 svm_CV.fit(X_train, y_train)
 print('-' * 100)
 print('SVM train score: {:.3f}'.format(svm_CV.score(X_train, y_train)))
-print('SVM test score: {:.3f}'.format(svm_CV.score(X_test, y_test)))
+print('SMV best validation score: {0}'.format(svm_CV.best_score_))
 print('SVM best params: {0}'.format(svm_CV.best_params_))
-print('SVM supports: {0}'.format(svm_CV.best_estimator_.support_))
-print('SVM support vector: {0}'.format(svm_CV.best_estimator_.support_vectors_))
-print('SVM number of support vector: {0}'.format(svm_CV.best_estimator_.n_support_))
-
+print('SVM test score: {:.3f}'.format(svm_CV.score(X_test, y_test)))
 
 # logistic pipeline
 lr_pipe = Pipeline([
@@ -99,8 +94,10 @@ xgb_CV = RandomizedSearchCV(xgb, param_distributions=param_distributions_xgb, n_
 xgb_CV.fit(X_train, y_train)
 print('-' * 100)
 print('XGB train score: {:.3f}'.format(xgb_CV.score(X_train, y_train)))
+print('XGB best validation score: {0}'.format(xgb_CV.best_score_))
 print('XGB test score: {:.3f}'.format(xgb_CV.score(X_test, y_test)))
 print('XGB best params: {0}'.format(xgb_CV.best_params_))
+
 
 # Catboost
 cat_features = [
