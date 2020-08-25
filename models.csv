@@ -1,5 +1,6 @@
 model," selected_features",details," train_score","val_score","test_score",parameters
 NeuralNetwork,"All dummies, drop 'choral_ID'",,"0.7581","0.7506","0.7364","Dense(32), Dense(64), Dropout(0.25), Dense(64), Dropout(0.25), Dense(102)"
-SVM,"All dummies, drop 'choral_ID'",,"0.807","","0.738","{'random_state': 123, 'kernel': 'rbf', 'gamma': 'scale', 'C': 1.2915496650148828}"
-LogisticRegression,"",,"0.789","","0.735","{'classifier__multi_class': 'multinomial', 'classifier__max_iter': 350, 'classifier__C': 1.4677992676220706, 'classifier': LogisticRegression(C=1.4677992676220706, class_weight=None, dual=False, fit_intercept=True, intercept_scaling=1, l1_ratio=None, max_iter=350, multi_class='multinomial', n_jobs=None, penalty='l2', random_state=123, solver='lbfgs', tol=0.0001, verbose=0, warm_start=False)}"
+SVM,"All dummies, drop 'choral_ID'",,"0.807","0.7465","0.738","{'random_state': 123, 'kernel': 'rbf', 'gamma': 'scale', 'C': 1.2915496650148828}"
+LogisticRegression,"",,"0.789","0.7414","0.735","{'classifier__multi_class': 'multinomial', 'classifier__max_iter': 350, 'classifier__C': 1.4677992676220706, 'classifier': LogisticRegression(C=1.4677992676220706, class_weight=None, dual=False, fit_intercept=True, intercept_scaling=1, l1_ratio=None, max_iter=350, multi_class='multinomial', n_jobs=None, penalty='l2', random_state=123, solver='lbfgs', tol=0.0001, verbose=0, warm_start=False)}"
 CatBoost,"drop 'choral_ID'",,"0.798","","0.706",Default
+XGBoost,"All dummies, drop 'choral_ID'","","0.666","0.6627","0.645","{'subsample': 0.67, 'min_split_loss': 27.825594022071243, 'min_child_weight': 3, 'max_depth': 6, 'learning_rate': 0.08163265306122448, 'colsample_bytree': 1.0, 'colsample_bynode': 0.23, 'colsample_bylevel': 1.0}"
